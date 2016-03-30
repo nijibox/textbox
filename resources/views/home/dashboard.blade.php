@@ -1,27 +1,34 @@
-@extends('layouts.app')
+@extends('layouts.2paned')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">最近の記事</div>
+@section('content.main')
+<h2>最近の記事</h2>
 
-                <div class="panel-body">
-                </div>
-
-                <table class="table">
-                    @foreach($latestArticles as $article)
-                        <tr>
-                            <td><a href="{{ route('get_article_single', $article->id) }}">{{ $article->title }}</a></td>
-                        </tr>
-                    @endforeach
-                        <tr>
-                            <td style="text-align: right;"><a href="{{ route('get_article_list') }}">...もっと見る</a></td>
-                        </tr>
-                </table>
+@foreach($latestArticles as $article)
+    <div class="well well-sm">
+        <h3><a href="{{ route('get_article_single', $article->id) }}">{{ $article->title }}</a></h3>
+        <div class="row">
+            <div class="col-xs-6">
+            @foreach($article->tags as $tag)
+            <a href="{{ route('list_by_tag', ['tagBody' => $tag->body ])}}"><span class="label label-info">{{ $tag->body }}</span></a>
+            @endforeach
+            </div>
+            <div class="col-xs-6">
+            <p class="text-right">
+                by {{ $article->author->name }}
+                at {{ $article->updated_at}}
+            </p>
             </div>
         </div>
     </div>
-</div>
+@endforeach
+<p style="text-align: right;"><a href="{{ route('get_article_list') }}">...もっと見る</a></p>
+@endsection
+
+@section('content.sub')
+<h3>タグ</h3>
+<ol>
+    @foreach($tagSummary as $tag)
+    <li><a href="{{ route('list_by_tag', $tag->body) }}">{{ $tag->body }} [{{ $tag->count }}]</a></li>
+    @endforeach
+</ol>
 @endsection

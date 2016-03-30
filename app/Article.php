@@ -24,6 +24,46 @@ class Article extends Model
         return $this->belongsTo(\App\User::class, 'author_id');
     }
 
+    public function tags()
+    {
+        return $this->hasMany(\App\ArticleTag::class, 'article_id');
+    }
+
+    /**
+     * 紐付いているタグを、HTMLフォームに合わせるために文字列化する
+     * FIXME: もうちょっと直感的な方法があるはず
+     */
+    public function tagsForInput()
+    {
+        $tags = (array)$this->tags;
+        usort ( $tags, function($a, $b) {
+            if ($a->sort_num == $b->sort_num) {
+                return 0;
+            }
+            return ($a->sort_num < $b->sort_num) ? -1 : 1;
+        });
+        $text = '';
+        foreach ($tags[0] as $tag) {
+            $text .= ',' . $tag->attributes['body'];
+        }
+        return mb_substr($text, 1);
+    }
+
+    /**
+     * 記事に紐づくタグを、まとめて差し替える
+     *
+     * @param array $tags
+     */
+    public function updateTags(array $tags)
+    {
+        $this->tags()->delete();
+        $sortNum = 1;
+        foreach ($tags as $tagBody) {
+            $this->tags()->create(['sort_num' => $sortNum, 'body' => $tagBody]);
+            $sortNum++;
+        }
+    }
+
     /**
      * @return \Illuminate\Database\Query\Builder
      */

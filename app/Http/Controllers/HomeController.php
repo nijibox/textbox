@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Article;
+use App\ArticleTag;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -35,8 +36,10 @@ class HomeController extends Controller
     public function dashboard()
     {
         $latestArticles = Article::latestInternal()->limit(5)->get();
+        $tagSummary = ArticleTag::calcSummary()->limit(10)->get();
 
         return view('home.dashboard', [
+            'tagSummary' => $tagSummary,
             'latestArticles' => $latestArticles,
         ]);
     }

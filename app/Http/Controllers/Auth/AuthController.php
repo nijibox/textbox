@@ -99,6 +99,15 @@ class AuthController extends Controller
             ]);
             $user->save();
         }
+        // 名前の取得に失敗したら、メールアドレスから作り直す
+        // TODO: 汎用性がない
+        if ( $user->name == '' ) {
+            $mail = $userData->getEmail();
+            list($name, $domain) = explode('@', $mail);
+            $name = str_replace('.', ' ', $name);
+            $user->name = ucwords($name);
+            $user->save();
+        }
         $auth->login($user);
         return redirect('/dashboard');
     }

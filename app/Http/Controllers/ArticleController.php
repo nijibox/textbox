@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use App\Http\Requests;
 use App\Article;
+use App\ArticleTag;
 use Illuminate\Http\Request;
 
 
@@ -103,6 +104,11 @@ class ArticleController extends Controller
         }
         DB::transaction(function () use ($article, $request, $message)
         {
+            // TODO: バリデーション対象(タグ数が指定以下であること)
+            $tagBodySet = explode(',', $request->input('articleTags', ''));
+            if (count($tagBodySet) > 1 || $tagBodySet[0] != '') {
+                $article->updateTags($tagBodySet);
+            }
             $article->save();
             $request->session()->flash('flash_message', $message);
         });
@@ -145,11 +151,33 @@ class ArticleController extends Controller
     public function getList()
     {
         $articles = Article::latestInternal()->paginate(static::ITEMS_PER_PAGE);
+        $tagSummary = ArticleTag::calcSummary()->limit(10)->get();
 
         // TODO: 記事がない場合の処理が必要？
 
         // Render articles
         return view('article.list', [
+            'articles' => $articles,
+            'tagSummary' => $tagSummary,
+        ]);
+    }
+
+    /**
+     * 指定されたタグを含むリストを表示する
+     */
+    public function getListByTag($tagBody)
+    {
+        $articles = Article::latestInternal()
+            ->whereHas('tags', function ($query) use ($tagBody) {
+                $query->where('body', '=', $tagBody);
+            })
+            ->paginate(static::ITEMS_PER_PAGE);
+        $tagSummary = ArticleTag::calcSummary()->limit(10)->get();
+
+        // Render articles
+        return view('article.list_by_tag', [
+            'tagBody' => $tagBody,
+            'tagSummary' => $tagSummary,
             'articles' => $articles,
         ]);
     }

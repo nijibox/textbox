@@ -51,4 +51,10 @@ class ArticleTest extends \TestCase
         $this->assertEquals(count($articles), 1);
         $this->assertEquals($articles->first()->title, 'test title1');
     }
+
+    public function testTagsRelation()
+    {
+        $article = Article::find(1);
+        $this->assertEquals(count($article->tags), 0);
+    }
 }

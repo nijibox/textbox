@@ -22,9 +22,15 @@
                 {!! csrf_field() !!}
                 {{ Form::hidden('_articleId', $article->id) }}
                 <div class="form-group">
+                    <label class="control-label">タイトル</label>
                     <input class="form-control" type="text" name="articleTitle" placeholder="Title ?" value="{{$article->title}}">
                 </div>
                 <div class="form-group">
+                    <label class="control-label">タグ</label>
+                    <input class="form-control" type="text" name="articleTags" data-role="tagsinput" value="{{$article->tagsForInput()}}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">本文</label>
                     <textarea name="articleBody" data-provide="markdown" rows="10">{{$article->body}}</textarea>
                 </div>
                 <div class="form-group">
@@ -48,6 +54,12 @@
 
 @section('page_css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
+<style>
+.bootstrap-tagsinput {
+    width: 100%;
+}
+</style>
 @endsection
 
 @section('page_js')
@@ -63,4 +75,5 @@ marked.setOptions({
     smartypants: false});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 @endsection
