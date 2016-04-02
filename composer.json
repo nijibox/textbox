@@ -10,7 +10,8 @@
         "laravel/framework": "5.2.*",
         "laravel/socialite": "^2.0",
         "cebe/markdown": "^1.1",
-        "laravelcollective/html": "^5.2"
+        "laravelcollective/html": "^5.2",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
