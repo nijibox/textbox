@@ -14,6 +14,9 @@ class AddPages extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->text('body');
+            $table->string('headline');
             $table->timestamps();
         });
     }
