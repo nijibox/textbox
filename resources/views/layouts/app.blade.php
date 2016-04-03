@@ -69,6 +69,9 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/mypage') }}"><i class="fa fa-btn fa-user"></i>マイページ</a></li>
+                                @if(Auth::user()->is_admin)
+                                <li><a><i class="fa fa-btn fa-shield"></i>管理メニュー(未実装)</a></li>
+                                @endif
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>ログアウト</a></li>
                             </ul>
                         </li>
