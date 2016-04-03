@@ -12,6 +12,7 @@
         <testsuite name="Application Test Suite">
             <directory>./tests/</directory>
             <directory>./tests/models/</directory>
+            <directory>./tests/commands/</directory>
         </testsuite>
     </testsuites>
     <filter>
