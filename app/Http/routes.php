@@ -35,8 +35,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/mypage', 'HomeController@mypage');
 
-    Route::get('/pages/{pageId}', ['as' => 'get_page', 'uses' => 'PageController@getOne']);
-
     Route::get('/articles', ['as' => 'get_article_list', 'uses' => 'ArticleController@getList']);
     Route::get('/articles/_new', ['as' => 'form_new_article', 'uses' => 'ArticleController@newForm']);
     Route::post('/articles/_new', ['as' => 'post_new_article', 'uses' => 'ArticleController@postOne']);
@@ -45,4 +43,17 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/articles/{articleId}/_edit', ['as' => 'form_edit_article', 'uses' => 'ArticleController@postOne']);
 
     Route::get('/tags/{tagBody}', ['as' => 'list_by_tag', 'uses' => 'ArticleController@getListByTag']);
+});
+
+
+
+Route::group(['middleware' => ['web', 'adminOnly']], function () {
+    Route::get('/pages', ['as' => 'get_page_list', 'uses' => 'PageController@getList']);
+    Route::get('/pages/_new', ['as' => 'form_new_page', 'uses' => 'PageController@newForm']);
+    Route::post('/pages/_new', ['as' => 'post_new_page', 'uses' => 'PageController@postOne']);
+    // Route::get('/pages/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@editForm']);
+    // Route::post('/pages/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@postOne']);
+});
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/pages/{pageId}', ['as' => 'get_page', 'uses' => 'PageController@getOne']);
 });
