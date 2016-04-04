@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    const ITEMS_PER_PAGE = 20;
+
     /**
      * Create a new controller instance.
      *
@@ -123,6 +125,24 @@ class PageController extends Controller
             $request->session()->flash('flash_message', $message);
         });
         return redirect(route('get_page_single', ['pageId' => $page->id]));
+    }
+
+    /**
+     * 表示可能な記事リストを表示する。
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getList()
+    {
+        $pages = Page::paginate(static::ITEMS_PER_PAGE);
+
+        // TODO: 記事がない場合の処理が必要？
+
+        // Render pages
+        return view('page.list', [
+            'pages' => $pages,
+        ]);
     }
 
 }
