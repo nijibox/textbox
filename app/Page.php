@@ -12,6 +12,16 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'body', 'headline',
+        'title', 'body', 'headline', 'location',
     ];
+
+    public static function fetchHeaderPages()
+    {
+        return Page::where('location', 'header')->get();
+    }
+
+    public static function fetchFooterPages()
+    {
+        return Page::where('location', 'footer')->get();
+    }
 }

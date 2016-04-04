@@ -17,6 +17,7 @@ class AddPages extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('headline');
+            $table->string('location');
             $table->timestamps();
         });
     }
