@@ -55,6 +55,9 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    @foreach($headerPages as $page)
+                    <li><a href="{{ route('get_page_single', ['pageId' => $page->id]) }}">{{ $page->headline }}</a></li>
+                    @endforeach
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">ログイン</a></li>
@@ -70,7 +73,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/mypage') }}"><i class="fa fa-btn fa-user"></i>マイページ</a></li>
                                 @if(Auth::user()->is_admin)
-                                <li><a><i class="fa fa-btn fa-shield"></i>管理メニュー(未実装)</a></li>
+                                <li><a href="{{ route('get_page_list') }}"><i class="fa fa-btn fa-shield"></i>管理メニュー(ページ編集)</a></li>
                                 @endif
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>ログアウト</a></li>
                             </ul>
