@@ -46,14 +46,15 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 
-
-Route::group(['middleware' => ['web', 'adminOnly']], function () {
-    Route::get('/pages', ['as' => 'get_page_list', 'uses' => 'PageController@getList']);
-    Route::get('/pages/_new', ['as' => 'form_new_page', 'uses' => 'PageController@newForm']);
-    Route::post('/pages/_new', ['as' => 'post_new_page', 'uses' => 'PageController@postOne']);
-    Route::get('/pages/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@editForm']);
-    Route::post('/pages/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@postOne']);
-});
-Route::group(['middleware' => ['web']], function () {
-    Route::get('/pages/{pageId}', ['as' => 'get_page_single', 'uses' => 'PageController@getOne']);
+/* 固定ページ
+ */
+Route::group(['prefix' => '/pages', 'middleware' => ['web']], function () {
+    Route::group(['middleware' => 'adminOnly'], function(){
+        Route::get('/', ['as' => 'get_page_list', 'uses' => 'PageController@getList']);
+        Route::get('/_new', ['as' => 'form_new_page', 'uses' => 'PageController@newForm']);
+        Route::post('/_new', ['as' => 'post_new_page', 'uses' => 'PageController@postOne']);
+        Route::get('/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@editForm']);
+        Route::post('/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@postOne']);
+    });
+    Route::get('/{pageId}', ['as' => 'get_page_single', 'uses' => 'PageController@getOne']);
 });
