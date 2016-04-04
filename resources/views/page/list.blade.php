@@ -5,6 +5,13 @@
 @endsection
 
 @section('content.main')
+    <div class="container">
+        <div class="row">
+            <form action="{{ route('form_new_page') }}">
+                <button type="submit" class="btn">新規追加</button>
+            </form>
+        </div>
+    </div>
 @foreach($pages as $page)
     <div class="well well-sm">
         <h3><a href="{{ route('get_page_single', $page->id) }}">{{ $page->title }}</a></h3>
