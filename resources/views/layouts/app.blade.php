@@ -55,6 +55,9 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    @foreach($headerPages as $page)
+                    <li><a href="{{ route('get_page', ['pageId' => $page->id]) }}">{{ $page->headline }}</a></li>
+                    @endforeach
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">ログイン</a></li>
