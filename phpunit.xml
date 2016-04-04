@@ -13,6 +13,7 @@
             <directory>./tests/</directory>
             <directory>./tests/models/</directory>
             <directory>./tests/commands/</directory>
+            <directory>./tests/middlewares/</directory>
         </testsuite>
     </testsuites>
     <filter>
