@@ -122,7 +122,7 @@ class PageController extends Controller
             $page->save();
             $request->session()->flash('flash_message', $message);
         });
-        return redirect(route('get_page', ['pageId' => $page->id]));
+        return redirect(route('get_page_single', ['pageId' => $page->id]));
     }
 
 }

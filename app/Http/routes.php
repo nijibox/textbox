@@ -55,5 +55,5 @@ Route::group(['middleware' => ['web', 'adminOnly']], function () {
     // Route::post('/pages/{pageId}/_edit', ['as' => 'form_edit_page', 'uses' => 'PageController@postOne']);
 });
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/pages/{pageId}', ['as' => 'get_page', 'uses' => 'PageController@getOne']);
+    Route::get('/pages/{pageId}', ['as' => 'get_page_single', 'uses' => 'PageController@getOne']);
 });
