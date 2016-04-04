@@ -35,6 +35,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/mypage', 'HomeController@mypage');
 
+    Route::get('/pages/{pageId}', ['uses' => 'PageController@getOne']);
+
     Route::get('/articles', ['as' => 'get_article_list', 'uses' => 'ArticleController@getList']);
     Route::get('/articles/_new', ['as' => 'form_new_article', 'uses' => 'ArticleController@newForm']);
     Route::post('/articles/_new', ['as' => 'post_new_article', 'uses' => 'ArticleController@postOne']);
