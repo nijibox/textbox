@@ -6,3 +6,10 @@ test:
   pre:
     - cp .env.example .env
     - php artisan key:generate
+deployment:
+  staging:
+    branch:
+      - master
+      - demo_env
+    commands:
+      - git push $DEOPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH $CIRCLE_SHA1:master
