@@ -12,4 +12,4 @@ deployment:
       - master
       - demo_env
     commands:
-      - git push $DEPLOY_TARGET $CIRCLE_SHA1:master
+      - git push $DEPLOY_TARGET HEAD:master
