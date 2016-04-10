@@ -12,4 +12,5 @@ deployment:
       - master
       - demo_env
     commands:
+      - echo $DEOPLOY_TEST
       - git push $DEOPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH $CIRCLE_SHA1:master
