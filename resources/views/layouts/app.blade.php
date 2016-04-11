@@ -61,7 +61,7 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">ログイン</a></li>
-                        @if(env('OAUTH_ONLY', false) === false)
+                        @if(env('OAUTH_ONLY', false) === false && !config('app.demo'))
                         <li><a href="{{ url('/register') }}">ユーザ登録</a></li>
                         @endif
                     @else
