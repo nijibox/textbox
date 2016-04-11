@@ -30,9 +30,16 @@ class AdminNewUser extends Command
      */
     public function handle()
     {
+        //
         $userEmail = $this->argument('email');
         $userPassword = $this->argument('password');
-        return User::create([
+        //
+        $user =  User::where('email', $userEmail)->first();
+        if ( !is_null($user) ) {
+            $this->error('すでに登録済みのメールアドレスです');
+            return false;
+        }
+        $user = User::create([
             'name' => $userEmail,
             'email' => $userEmail,
             'password' => $userPassword,

@@ -35,4 +35,22 @@ class AdminNewUserTest extends \TestCase
         return $tester;
     }
 
+    /**
+     * すでに登録されているメールアドレス
+     *
+     * @return void
+     */
+    public function testDuplicatedUser()
+    {
+        // print(111);
+        $tester = $this->testValid();
+        // var_dump($tester);
+        $tester->execute([
+            'email' => 'user1@example.com',
+            'password' => 'Password2',
+        ]);
+        $this->assertEquals(User::count(), 1);
+        return $tester;
+    }
+
 }
