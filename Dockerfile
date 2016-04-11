@@ -15,4 +15,5 @@ RUN composer install --no-scripts --no-dev
 
 ENV PORT=5000
 
+RUN php artisan key:generate
 CMD php artisan serve --host 0.0.0.0 --port $PORT
