@@ -217,4 +217,6 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
     ],
 
+    // デモ稼働時の特有機能
+    'demo' => env('APP_DEMO', false),
 ];
