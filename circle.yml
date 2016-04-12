@@ -6,3 +6,11 @@ test:
   pre:
     - cp .env.example .env
     - php artisan key:generate
+deployment:
+  demo:
+    branch:
+      - master
+      - demo_env
+    commands:
+      - git push $DEPLOY_HOST:$DEPLOY_TARGET HEAD:master
+      - ssh $DEPLOY_HOST enter $DEPLOY_TARGET web php artisan migrate
