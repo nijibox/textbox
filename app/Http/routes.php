@@ -58,3 +58,10 @@ Route::group(['prefix' => '/pages', 'middleware' => ['web']], function () {
     });
     Route::get('/{pageId}', ['as' => 'get_page_single', 'uses' => 'PageController@getOne']);
 });
+
+
+/* API系
+ */
+Route::group(['prefix' => '/api', 'middleware' => ['api']], function () {
+    Route::post('/auth', ['uses' => 'Auth\AuthController@authenticateFromApi']);
+});
