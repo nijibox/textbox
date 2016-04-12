@@ -42,7 +42,7 @@ class AdminNewUser extends Command
         $user = User::create([
             'name' => $userEmail,
             'email' => $userEmail,
-            'password' => $userPassword,
+            'password' => bcrypt($userPassword),
         ]);
         return true;
     }
