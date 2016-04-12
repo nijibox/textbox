@@ -5,10 +5,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use App\Article;
 
 
-class AuthControllerTest extends TestCase
+class AuthenticateControllerTest extends TestCase
 {
     public function setUp()
     {
@@ -26,7 +25,7 @@ class AuthControllerTest extends TestCase
      */
     public function testOk()
     {
-        $response = $this->call('POST', '/api/auth', [
+        $response = $this->call('POST', '/api/authenticate', [
             'email' => 'user1@example.com',
             'password' => 'password1',
         ]);
@@ -47,7 +46,7 @@ class AuthControllerTest extends TestCase
         ];
         $testFunction = function ($credentials)
         {
-            $response = $this->call('POST', '/api/auth', $credentials);
+            $response = $this->call('POST', '/api/authenticate', $credentials);
             $this->assertEquals($response->getStatusCode(), 401);
             $ctype = $response->headers->get('content_type');
             $this->assertEquals($ctype, 'application/json');

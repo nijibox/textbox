@@ -63,5 +63,5 @@ Route::group(['prefix' => '/pages', 'middleware' => ['web']], function () {
 /* API系
  */
 Route::group(['prefix' => '/api', 'middleware' => ['api']], function () {
-    Route::post('/auth', ['uses' => 'Auth\AuthController@authenticateFromApi']);
+    Route::post('/authenticate', ['uses' => 'AuthenticateController@authenticate']);
 });
