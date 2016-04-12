@@ -90,7 +90,7 @@
     <footer>
         <hr>
         <div class="container align-center">
-            <p>バージョン: <a href="{{ config('app.repo') }}" target="_blank">{{ config('app.name') }} ver.{{ config('app.version') }}</a></p>
+            <p>textboxバージョン: <a href="{{ config('app.repo') }}" target="_blank">{{ config('app.version') }}</a></p>
         </div>
     </footer>
     <!-- JavaScripts -->
