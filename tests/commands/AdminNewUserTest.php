@@ -32,6 +32,7 @@ class AdminNewUserTest extends \TestCase
             'password' => 'Password',
         ]);
         $this->assertEquals(User::count(), 1);
+        $this->assertNotEquals(User::first()->password, 'Password');
         return $tester;
     }
 
