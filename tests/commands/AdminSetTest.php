@@ -17,8 +17,12 @@ class AdminSetTest extends \TestCase
 
     }
 
-    public function setUp()
-    {
+    public function setUp() {
+        // $this->store = m::mock('App\Services\Store');
+        $this->application = $this->createApplication();
+        $this->command = new AdminSet();
+        $this->command->setLaravel($this->application->make('Illuminate\Contracts\Foundation\Application'));
+        $this->command->setApplication($this->application->make('Symfony\Component\Console\Application'));
         parent::setUp();
         $this->setTestData();
     }
@@ -30,7 +34,10 @@ class AdminSetTest extends \TestCase
      */
     public function testEmailIsNotExists()
     {
-        $tester = new CommandTester(new AdminSet);
+        $tester = new CommandTester($this->command);
+        $tester->execute([
+            'email' => 'not_exists@example.com',
+        ]);
         // 引数に'not_found@example.com'を指定してコマンド実行
         $user = User::find(1)->first();
         $this->assertEquals($user->is_admin, '0');
@@ -45,10 +52,11 @@ class AdminSetTest extends \TestCase
     {
         $user = User::find(1)->first();
         $this->assertEquals($user->is_admin, '0');
-        $tester = new CommandTester(new AdminSet);
-        // 引数に'user1@example.com'を指定してコマンド実行
+        $tester = new CommandTester($this->command);
+        $tester->execute([
+            'email' => 'user1@example.com',
+        ]);
         $user = User::find(1)->first();
-        // TODO: テスト実行できるようになったらコメントから復帰
-        // $this->assertEquals($user->is_admin, '1');
+        $this->assertEquals($user->is_admin, '1');
     }
 }

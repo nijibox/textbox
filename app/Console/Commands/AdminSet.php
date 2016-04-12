@@ -30,7 +30,6 @@ class AdminSet extends Command
      */
     public function handle()
     {
-        // TODO: テストコード無し
         $userEmail = $this->argument('email');
         $user =  User::where('email', $userEmail)->first();
         if ( is_null($user) ) {
