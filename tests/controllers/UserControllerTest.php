@@ -35,4 +35,21 @@ class UserControllerTest extends \TestCase
         $this->assertNotEquals($testUser->name, $beforeUserName);
     }
 
+    /**
+     * ユーザー名だけだけど変えられること
+     *
+     * @return void
+     */
+    public function testEditUserProfileNotModified()
+    {
+        $this->setupTestData();
+        $testUser = User::find(1);
+        $beforeUserName = $testUser->name;
+        $this->be($testUser);
+        $response = $this->action('POST', 'UserController@editProfile', ['name' => $beforeUserName]);
+        $this->assertEquals($response->getStatusCode(), 200);
+        // $location = $response->headers->get('location');
+        // $this->assertRegExp('|/users/_me/profile|', $location);
+    }
+
 }
