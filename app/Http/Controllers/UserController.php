@@ -13,8 +13,8 @@ class UserController extends Controller
 {
     public function showProfileForm(Request $request)
     {
-        // TODO: stub
-        return view('home.user_profile');
+        $owner = Auth::user();
+        return view('home.user_profile', ['owner' => $owner, 'errors']);
     }
 
     /**
@@ -28,12 +28,12 @@ class UserController extends Controller
             ]
         );
         if ( $validator->fails() ) {
-            return $this->showProfileForm($request);
+            $request->session()->flash('flash_message', 'ユーザー情報の更新に失敗しました');
+            return $this->showProfileForm($request)->with(['errors' => $validator->errors()]);
         }
 
         $owner = Auth::user();
         if ( $profile['name'] == $owner->name ) {
-            // $request->session()->flash('flash_message', 'ユーザー情報を更新しました');
             return $this->showProfileForm($request);
         }
         DB::transaction(function () use ($owner, $request, $profile)
