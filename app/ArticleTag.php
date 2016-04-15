@@ -29,7 +29,7 @@ class ArticleTag extends Model
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function calcSummary()
+    public static function calcSummaryLeast()
     {
         // TODO: Eloquentの記法で書けない？
         return DB::table('article_tags')

@@ -59,7 +59,7 @@ class ArticleTagTest extends \TestCase
         $this->assertEquals($article->tagsForInput(), 'foo,bar');
     }
 
-    public function testCalcSummary()
+    public function testCalcCurrentSummary()
     {
         $this->injectTestData();
         // 追加登録
@@ -79,7 +79,7 @@ class ArticleTagTest extends \TestCase
             $article->save();
             $article->tags()->create(['sort_num' => 1, 'body' => 'tag5']);
         });
-        $summary = ArticleTag::calcSummary()->first();
+        $summary = ArticleTag::calcSummaryLeast()->first();
         $this->assertEquals($summary->body, 'tag5');
         // draftのものはタグとして数えない
         $this->assertEquals($summary->count, 2);
