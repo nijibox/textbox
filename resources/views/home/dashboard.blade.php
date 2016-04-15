@@ -26,10 +26,10 @@
 
 @section('content.sub')
 <h3>タグ</h3>
-<ol>
+<ul>
     @foreach($tagSummary as $tag)
     <li><a href="{{ route('list_by_tag', $tag->body) }}">{{ $tag->body }} [{{ $tag->count }}]</a></li>
     @endforeach
-</ol>
+</ul>
 <p style="text-align: right;"><a href="{{ route('get_tags_list') }}">...もっと見る</a></p>
 @endsection
