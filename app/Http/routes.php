@@ -44,6 +44,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/articles/{articleId}/_edit', ['as' => 'form_edit_article', 'uses' => 'ArticleController@editForm']);
     Route::post('/articles/{articleId}/_edit', ['as' => 'form_edit_article', 'uses' => 'ArticleController@postOne']);
 
+    Route::get('/tags/', ['as' => 'get_tags_list', 'uses' => 'TagController@getList']);
     Route::get('/tags/{tagBody}', ['as' => 'list_by_tag', 'uses' => 'ArticleController@getListByTag']);
 });
 
