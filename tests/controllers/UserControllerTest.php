@@ -52,4 +52,20 @@ class UserControllerTest extends \TestCase
         // $this->assertRegExp('|/users/_me/profile|', $location);
     }
 
+    /**
+     * ユーザー名だけだけど変えられること
+     *
+     * @return void
+     */
+    public function testEditUuserInvalidatedPost()
+    {
+        $this->setupTestData();
+        $testUser = User::find(1);
+        $beforeUserName = $testUser->name;
+        $this->be($testUser);
+        $response = $this->action('POST', 'UserController@editProfile', []);
+        $this->assertEquals($response->getStatusCode(), 200);
+        // $location = $response->headers->get('location');
+        // $this->assertRegExp('|/users/_me/profile|', $location);
+    }
 }

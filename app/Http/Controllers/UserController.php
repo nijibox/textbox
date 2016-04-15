@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use DB;
+use Validator;
 
 
 class UserController extends Controller
@@ -22,6 +23,14 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $profile = $request->only('name');
+        $validator = Validator::make($profile, [
+            'name' => 'required',
+            ]
+        );
+        if ( $validator->fails() ) {
+            return $this->showProfileForm($request);
+        }
+
         $owner = Auth::user();
         if ( $profile['name'] == $owner->name ) {
             // $request->session()->flash('flash_message', 'ユーザー情報を更新しました');
