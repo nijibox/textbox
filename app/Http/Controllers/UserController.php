@@ -14,7 +14,7 @@ class UserController extends Controller
     public function showProfileForm(Request $request)
     {
         // TODO: stub
-        return view('layouts.app');
+        return view('home.user_profile');
     }
 
     /**
