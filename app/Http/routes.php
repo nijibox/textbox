@@ -61,3 +61,11 @@ Route::group(['prefix' => '/pages', 'middleware' => ['web']], function () {
     });
     Route::get('/{pageId}', ['as' => 'get_page_single', 'uses' => 'PageController@getOne']);
 });
+
+
+/* API系
+ */
+Route::group(['prefix' => '/api/v1', 'middleware' => ['web']], function () {
+    Route::get('/articles', ['uses' => 'ArticleController@getListAsJson']);
+    Route::get('/articles/{articleId}', ['uses' => 'ArticleController@getOneAsJson']);
+});

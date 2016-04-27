@@ -162,6 +162,29 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function getListAsJson()
+    {
+        $articles = Article::latestInternal()->paginate(static::ITEMS_PER_PAGE);
+        return response()->json(['articles' => $articles]);
+    }
+
+    public function getOneAsJson($articleId)
+    {
+        $article = Article::find($articleId);
+        // If article is not found, abort request.
+        if ( is_null($article) ) {
+            return abort(404);
+        }
+        // 閲覧権がない場合
+        // MEMO: モデル側に書く？(Auth::userが必要なので、こっちでもよい？)
+        if ($article->status == 'draft' && Auth::user()->id != $article->author_id) {
+            return abort(404);
+        }
+
+        // Render article
+        return response()->json(['article' => $article]);
+    }
+
     /**
      * 指定されたタグを含むリストを表示する
      */
