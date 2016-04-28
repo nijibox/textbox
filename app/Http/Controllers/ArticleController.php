@@ -16,15 +16,6 @@ class ArticleController extends Controller
     const ITEMS_PER_PAGE = 20;
 
     /**
-     * Create a new controller instance.
-     *
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * 記事投稿用フォームを表示させる
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
