@@ -16,15 +16,6 @@ class ArticleController extends Controller
     const ITEMS_PER_PAGE = 20;
 
     /**
-     * Create a new controller instance.
-     *
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * 記事投稿用フォームを表示させる
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
@@ -160,6 +151,29 @@ class ArticleController extends Controller
             'articles' => $articles,
             'tagSummary' => $tagSummary,
         ]);
+    }
+
+    public function getListAsJson()
+    {
+        $articles = Article::latestInternal()->paginate(static::ITEMS_PER_PAGE);
+        return response()->json(['articles' => $articles]);
+    }
+
+    public function getOneAsJson($articleId)
+    {
+        $article = Article::find($articleId);
+        // If article is not found, abort request.
+        if ( is_null($article) ) {
+            return abort(404);
+        }
+        // 閲覧権がない場合
+        // MEMO: モデル側に書く？(Auth::userが必要なので、こっちでもよい？)
+        if ($article->status == 'draft' && Auth::user()->id != $article->author_id) {
+            return abort(404);
+        }
+
+        // Render article
+        return response()->json(['article' => $article]);
     }
 
     /**
