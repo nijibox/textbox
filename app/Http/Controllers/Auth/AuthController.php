@@ -26,7 +26,9 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins {
+        AuthenticatesAndRegistersUsers::login as loginOrigin;
+    }
 
     /**
      * Where to redirect users after login / registration.
@@ -110,5 +112,21 @@ class AuthController extends Controller
         }
         $auth->login($user);
         return redirect('/dashboard');
+    }
+
+    public function showLoginForm(Request $request)
+    {
+        $beforeUrl = $request->get('before', null);
+        if ( !is_null($beforeUrl) ) {
+            $request->session()->set('beforeUrl', $beforeUrl);
+        }
+        return parent::showLoginForm();
+    }
+
+
+    public function login(Request $request)
+    {
+        $this->redirectTo = $request->session()->get('beforeUrl', $this->redirectTo);
+        return $this->loginOrigin($request);
     }
 }
