@@ -129,6 +129,7 @@ class ArticleController extends Controller
         // TODO: いったんここ以外の使用場所を思いつかないので、ここに直書きします
         $parser = new \App\Extra\QiitaMarkdown();
         $content = $parser->parse($article->body);
+        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
         $contentDom = new \DOMDocument();
         $contentDom->loadHTML($content);
         //
