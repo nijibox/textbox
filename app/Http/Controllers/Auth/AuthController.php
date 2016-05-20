@@ -112,7 +112,8 @@ class AuthController extends Controller
             $user->save();
         }
         $auth->login($user);
-        return redirect('/dashboard');
+        $redirectTo = $request->session()->get('beforeUrl', $this->redirectTo);
+        return redirect($redirectTo);
     }
 
     public function showLoginForm(Request $request)
