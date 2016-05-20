@@ -141,7 +141,7 @@ class ArticleController extends Controller
             if (! $contentElm instanceof \DOMElement) {
                 continue;
             }
-            if ( !in_array($contentElm->tagName, ['h1', 'h2']) ) {
+            if ( !in_array($contentElm->tagName, ['h1', 'h2', 'h3', ]) ) {
                 continue;
             }
             $text = $contentElm->nodeValue;
