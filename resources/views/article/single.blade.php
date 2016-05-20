@@ -32,13 +32,15 @@
 
 @section('content.main')
 <div class="page-content">
-{!! $parser->parse($article->body) !!}
+{!! $contentDom->saveHTML() !!}
 </div>
 @endsection
 
 @section('content.sub')
 <h3>見出し</h3>
-<p>(TODO: 未実装です)</p>
+<div>
+    {!! $headlineDom->saveHTML() !!}
+</div>
 @endsection
 
 

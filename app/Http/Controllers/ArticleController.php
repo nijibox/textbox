@@ -126,10 +126,40 @@ class ArticleController extends Controller
             return abort(404);
         }
 
+        // TODO: いったんここ以外の使用場所を思いつかないので、ここに直書きします
+        $parser = new \App\Extra\QiitaMarkdown();
+        $content = $parser->parse($article->body);
+        $contentDom = new \DOMDocument();
+        $contentDom->loadHTML($content);
+        //
+        $headlineDom = new \DOMDocument();
+        $headlineElm = $headlineDom->createElement('ul');
+        $headlineDom->appendChild($headlineElm);
+        //
+        $linkIndex = 1;
+        foreach ($contentDom->lastChild->lastChild->childNodes as $contentElm) {
+            if (! $contentElm instanceof \DOMElement) {
+                continue;
+            }
+            if ( !in_array($contentElm->tagName, ['h1', 'h2', 'h3', ]) ) {
+                continue;
+            }
+            $text = $contentElm->nodeValue;
+            $contentElm->setAttribute('id', "internal-header{$linkIndex}");
+            $li = $headlineDom->createElement('li');
+            $link = $headlineDom->createElement('a', $text);
+            $link->setAttribute('href', "#internal-header{$linkIndex}");
+            $li->appendChild($link);
+            $headlineDom->appendChild($li);
+            $linkIndex++;
+        }
+
         // Render article
         return view('article.single', [
             'article' => $article,
-            'parser' => new \App\Extra\QiitaMarkdown(),
+            'parser' => $parser,
+            'contentDom' => $contentDom,
+            'headlineDom' => $headlineDom,
         ]);
     }
 
