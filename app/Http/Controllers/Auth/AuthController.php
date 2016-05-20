@@ -28,6 +28,7 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins {
         AuthenticatesAndRegistersUsers::login as loginOrigin;
+        AuthenticatesAndRegistersUsers::showLoginForm as showLoginFormOrigin;
     }
 
     /**
@@ -120,7 +121,7 @@ class AuthController extends Controller
         if ( !is_null($beforeUrl) ) {
             $request->session()->set('beforeUrl', $beforeUrl);
         }
-        return parent::showLoginForm();
+        return $this->showLoginFormOrigin();
     }
 
 
