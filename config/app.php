@@ -166,6 +166,8 @@ return [
 
 
         Collective\Html\HtmlServiceProvider::class,
+
+        Maknz\Slack\SlackServiceProvider::class, /* slack */
     ],
 
     /*
@@ -215,6 +217,8 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
+
+        'Slack'     => Maknz\Slack\Facades\Slack::class,
     ],
 
     // デモ稼働時の特有機能
