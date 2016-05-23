@@ -26,7 +26,7 @@ return [
   |
   */
 
-  'channel' => env('SLACK_CHANNEL', '#bot-heaven'),
+  'channel' => env('SLACK_CHANNEL', '#general'),
 
   /*
   |-------------------------------------------------------------
