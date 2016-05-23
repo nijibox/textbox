@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Validator;
 use Auth;
 use DB;
+use Config;
 use App\Http\Requests;
 use App\Article;
 use App\ArticleTag;
 use Illuminate\Http\Request;
+use Maknz\Slack\Facades\Slack;
 
 
 class ArticleController extends Controller
@@ -103,6 +105,12 @@ class ArticleController extends Controller
             $article->save();
             $request->session()->flash('flash_message', $message);
         });
+        if($article->status === 'internal' && Config::get('slack.endpoint')){
+            // slackで告知
+            $title = $article->getAttributeValue('title');
+            $slack_message = "新しく記事が公開されました！ 「".$title."」\r\n ". route('get_article_single', ['articleId' => $article->id]);
+            Slack::send($slack_message);
+        }
         return redirect(route('get_article_single', ['articleId' => $article->id]));
     }
 
