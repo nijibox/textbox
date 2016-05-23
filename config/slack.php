@@ -13,7 +13,7 @@ return [
   |
   */
 
-  'endpoint' => 'https://hooks.slack.com/services/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',
+  'endpoint' => env('SLACK_ENDPOINT', false),
 
   /*
   |-------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
   |
   */
 
-  'channel' => '#general',
+  'channel' => env('SLACK_CHANNEL', '#bot-heaven'),
 
   /*
   |-------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
   |
   */
 
-  'username' => 'NijiboxStaQ',
+  'username' => env('SLACK_USERNAME', 'bot'),
 
   /*
   |-------------------------------------------------------------
@@ -51,7 +51,7 @@ return [
   |
   */
 
-  'icon' => ':icon_nb:',
+  'icon' => env('SLACK_ICON', ':eye:'),
 
   /*
   |-------------------------------------------------------------
