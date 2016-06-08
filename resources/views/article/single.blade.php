@@ -34,6 +34,25 @@
 <div class="page-content">
 {!! $contentDom->saveHTML() !!}
 </div>
+
+<hr><hr>
+
+<div class="page-comment">
+    @foreach($article->comments as $comment)
+    <div class="well well-sm">
+        <p><strong>{{$comment->body}}</strong></p>
+        <p class="text-right">by {{$comment->user->name}}</p>
+    </div>
+    @endforeach
+    <h3>コメントする</h3>
+    <form action="{{ '/articles/' . $article->id . '/comments/_new' }}" method="POST">
+        {!! csrf_field() !!}
+
+        <input class="form-control" type="text" name="articleComment" >
+
+        <button type="submit" class="btn btn-default">投稿</button>
+    </form>
+</div>
 @endsection
 
 @section('content.sub')

@@ -23,7 +23,7 @@ class CommentController extends Controller
             abort(404);
         }
         $comment = new Comment([
-            'body' => $request->input('body'),
+            'body' => $request->input('articleComment'),
         ]);
         $comment->user_id = $user->id;
         
