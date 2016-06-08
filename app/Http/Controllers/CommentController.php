@@ -18,11 +18,15 @@ class CommentController extends Controller
     public function postOne(Request $request, $articleId)
     {
         $user = Auth::user();
+        $article = Article::find($articleId);
+        if ( is_null($article) ) {
+            abort(404);
+        }
         $comment = new Comment([
             'body' => $request->input('body'),
         ]);
         $comment->user_id = $user->id;
-        $article = Article::find($articleId);
+        
         $article->comments()->save($comment);
         return redirect('/articles/'.$articleId);
     }

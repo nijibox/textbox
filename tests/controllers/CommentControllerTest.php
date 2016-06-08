@@ -37,5 +37,13 @@ class CommentControllerTest extends \TestCase
             ->assertResponseStatus('302');
         $article = Article::find(1);
         $this->assertEquals($article->comments->count(), 1);
-    }    
+    }
+
+    public function testCommentsInNotPost()
+    {
+        $user = User::find(1);
+        $this->actingAs($user)
+            ->post('/articles/2/comments/_new', ['body'=>'test'])
+            ->assertResponseStatus('404');
+    }
 }
