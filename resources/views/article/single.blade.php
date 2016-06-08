@@ -48,9 +48,13 @@
     <form action="{{ '/articles/' . $article->id . '/comments/_new' }}" method="POST">
         {!! csrf_field() !!}
 
-        <input class="form-control" type="text" name="articleComment" >
+        <div class="form-group">
+            <input class="form-control" type="text" name="articleComment" >
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">コメント</button>
+        </div>
 
-        <button type="submit" class="btn btn-default">投稿</button>
     </form>
 </div>
 @endsection
