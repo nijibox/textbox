@@ -27,13 +27,19 @@ class CommentControllerTest extends \TestCase
             'status' => 'internal',
             'author_id' => $user->id,
         ]);
+        $article = Article::create([
+            'title' => $faker->name,
+            'body' => $faker->text(),
+            'status' => 'draft',
+            'author_id' => $user->id,
+        ]);
     }
 
     public function testRedirectInPost()
     {
         $user = User::find(1);
         $this->actingAs($user)
-            ->post('/articles/1/comments/_new', ['body'=>'test'])
+            ->post('/articles/1/comments/_new', ['articleComment'=>'test'])
             ->assertResponseStatus('302');
         $article = Article::find(1);
         $this->assertEquals($article->comments->count(), 1);
@@ -43,7 +49,15 @@ class CommentControllerTest extends \TestCase
     {
         $user = User::find(1);
         $this->actingAs($user)
-            ->post('/articles/2/comments/_new', ['body'=>'test'])
+            ->post('/articles/3/comments/_new', ['articleComment'=>'test'])
             ->assertResponseStatus('404');
+    }
+
+    public function testCanNotPostForDraft()
+    {
+        $user = User::find(1);
+        $this->actingAs($user)
+            ->post('/articles/2/comments/_new', ['articleComment'=>'test'])
+            ->assertResponseStatus('400');
     }
 }

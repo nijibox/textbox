@@ -22,6 +22,9 @@ class CommentController extends Controller
         if ( is_null($article) ) {
             abort(404);
         }
+        if ( $article->status == 'draft' ) {
+            abort(400);
+        }
         $comment = new Comment([
             'body' => $request->input('articleComment'),
         ]);
