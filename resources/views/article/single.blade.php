@@ -39,7 +39,7 @@
 
 <div class="page-comment">
     @foreach($article->comments as $comment)
-    <div class="well well-sm">
+    <div class="well well-sm" id="{{ 'comment'.$comment->id }}">
         <p><strong>{{$comment->body}}</strong></p>
         <p class="text-right">by {{$comment->user->name}}</p>
     </div>

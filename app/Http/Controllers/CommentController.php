@@ -28,6 +28,6 @@ class CommentController extends Controller
         $comment->user_id = $user->id;
         
         $article->comments()->save($comment);
-        return redirect('/articles/'.$articleId);
+        return redirect('/articles/'.$articleId.'#comment'.$comment->id);
     }
 }
