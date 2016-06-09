@@ -29,6 +29,11 @@ class Article extends Model
         return $this->hasMany(\App\ArticleTag::class, 'article_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(\App\Comment::class, 'article_id');
+    }
+
     /**
      * 紐付いているタグを、HTMLフォームに合わせるために文字列化する
      * FIXME: もうちょっと直感的な方法があるはず
