@@ -10,6 +10,7 @@ use App\Article;
 use App\Comment;
 
 use Auth;
+use DB;
 
 class CommentController extends Controller
 {
@@ -25,10 +26,15 @@ class CommentController extends Controller
         if ( $article->status == 'draft' ) {
             abort(400);
         }
+
         $comment = new Comment([
             'body' => $request->input('articleComment'),
         ]);
         $comment->user_id = $user->id;
+        DB::transaction(function () use ($comment, $request)
+        {
+            $request->session()->flash('flash_message', 'コメントしました');
+        });
         
         $article->comments()->save($comment);
         return redirect('/articles/'.$articleId.'#comment'.$comment->id);
