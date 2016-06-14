@@ -108,7 +108,7 @@ class ArticleController extends Controller
         if($article->status === 'internal' && Config::get('slack.endpoint')){
             // slackで告知
             $title = $article->getAttributeValue('title');
-            $slack_message = "新しく記事が公開されました！ 「".$title."」\r\n ". route('get_article_single', ['articleId' => $article->id]);
+            $slack_message = "新しく記事が公開されました！ 「".$title."」by ".$article->author->name ." \r\n ". route('get_article_single', ['articleId' => $article->id]);
             Slack::send($slack_message);
         }
         return redirect(route('get_article_single', ['articleId' => $article->id]));
