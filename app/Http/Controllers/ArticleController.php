@@ -80,11 +80,16 @@ class ArticleController extends Controller
             'body' => $request->input('articleBody'),
             'status' => $request->input('articleStatus'),
         ];
+        $haveToNotify = false;
         if ($request->input('_articleId')) {
             // TODO: 編集権がない場合は、ここでエラー処理
             $article = Article::find($request->input('_articleId'));
             if (is_null( $article ) || $article->author->id != Auth::user()->id) {
                 return abort(404);
+            }
+            // TODO: ロジック検討
+            if ($article->status == 'draft' && $params['status'] != 'draft') {
+                $haveToNotify = true;
             }
             foreach ($params as $attr => $val) {
                 $article->{$attr} = $val;
@@ -94,6 +99,10 @@ class ArticleController extends Controller
             $params['author_id'] = Auth::user()->id;
             $article = Article::create($params);
             $message = 'New article is created';
+            // TODO: ロジック検討
+            if ($params['status'] != 'draft') {
+                $haveToNotify = true;
+            }
         }
         DB::transaction(function () use ($article, $request, $message)
         {
@@ -105,7 +114,7 @@ class ArticleController extends Controller
             $article->save();
             $request->session()->flash('flash_message', $message);
         });
-        if($article->status === 'internal' && Config::get('slack.endpoint')){
+        if($haveToNotify && Config::get('slack.endpoint')){
             // slackで告知
             $title = $article->getAttributeValue('title');
             $slack_message = "新しく記事が公開されました！ 「".$title."」by ".$article->author->name ." \r\n ". route('get_article_single', ['articleId' => $article->id]);
