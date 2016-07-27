@@ -12,9 +12,16 @@ class CreateMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('media', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('medias', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('path');
+            $table->string('mime_type');
+            $table->unsignedInteger('owner_id');
+            $table->unsignedBigInteger('article_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users');
+            $table->foreign('article_id')->references('id')->on('articles');
         });
     }
 
@@ -25,6 +32,6 @@ class CreateMediaTable extends Migration
      */
     public function down()
     {
-        Schema::drop('media');
+        Schema::drop('medias');
     }
 }
