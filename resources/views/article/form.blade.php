@@ -1,55 +1,54 @@
-@extends('layouts.app')
+@extends('layouts.2paned')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        @if($article->id)
-        <h1>記事編集</h1>
-        @else
-        <h1>新規投稿追加</h1>
-        @endif
-        <div class="col-md-10">
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form method="post">
-                {!! csrf_field() !!}
-                {{ Form::hidden('_articleId', $article->id) }}
-                <div class="form-group">
-                    <label class="control-label">タイトル</label>
-                    <input class="form-control" type="text" name="articleTitle" placeholder="Title ?" value="{{$article->title}}">
-                </div>
-                <div class="form-group">
-                    <label class="control-label">タグ</label>
-                    <input class="form-control" type="text" name="articleTags" data-role="tagsinput" value="{{$article->tagsForInput()}}">
-                </div>
-                <div class="form-group">
-                    <label class="control-label">本文</label>
-                    <textarea name="articleBody" data-provide="markdown" rows="10">{{$article->body}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label class="radio-inline">
-                        {{ Form::radio('articleStatus', 'draft', $article->status == 'draft', ['id' => 'articleStatusDraft']) }}
-                        下書きのまま
-                    </label>
-                    <label class="radio-inline">
-                        {{ Form::radio('articleStatus', 'internal', $article->status == 'internal', ['id' => 'articleStatusInternal']) }}
-                        社内公開する
-                    </label>
-                </div>
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary">保存する</button>
-                </div>
-            </form>
-        </div>
+@section('content.main')
+@if($article->id)
+<h1>記事編集</h1>
+@else
+<h1>新規投稿追加</h1>
+@endif
+
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
-</div>
+@endif
+<form method="post">
+    {!! csrf_field() !!}
+    {{ Form::hidden('_articleId', $article->id) }}
+    <div class="form-group">
+        <label class="control-label">タイトル</label>
+        <input class="form-control" type="text" name="articleTitle" placeholder="Title ?" value="{{$article->title}}">
+    </div>
+    <div class="form-group">
+        <label class="control-label">タグ</label>
+        <input class="form-control" type="text" name="articleTags" data-role="tagsinput" value="{{$article->tagsForInput()}}">
+    </div>
+    <div class="form-group">
+        <label class="control-label">本文</label>
+        <textarea name="articleBody" data-provide="markdown" rows="10">{{$article->body}}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="radio-inline">
+            {{ Form::radio('articleStatus', 'draft', $article->status == 'draft', ['id' => 'articleStatusDraft']) }}
+            下書きのまま
+        </label>
+        <label class="radio-inline">
+            {{ Form::radio('articleStatus', 'internal', $article->status == 'internal', ['id' => 'articleStatusInternal']) }}
+            社内公開する
+        </label>
+    </div>
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">保存する</button>
+    </div>
+</form>
+@endsection
+
+@section('content.sub')
+<h3>メディアアップロード</h3>
 @endsection
 
 @section('page_css')
