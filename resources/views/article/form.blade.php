@@ -48,7 +48,7 @@
 @endsection
 
 @section('content.sub')
-<attachments token="{{csrf_token()}}" >
+<attachments token="{{csrf_token()}}" articleId="{{ $article->id }}">
 @endsection
 
 @section('page_css')
@@ -86,10 +86,25 @@ marked.setOptions({
             <button type="button" onclick={ postFile } >Add</button>
         </form>
 
+        <ul>
+            <li each={ attachment in attachments }>
+                { attachment.url }
+            </li>
+        </ul>
+
         this.fileData = null
+        this.attachments = [];
+        addPostedAttachments (attachments) {
+            self = this;
+            attachments.forEach(function(val, idx){
+                self.attachments.push(val);
+                self.update();
+            });
+        }
         postFile (e) {
             var formElm = $(e.target).parent();
             var formData = new FormData($(formElm).get(0));
+            self = this;
             $.ajax({
                 url: '/attachments',
                 type: 'POST',
@@ -99,13 +114,20 @@ marked.setOptions({
                 processData: false,
                 dataType: 'json'
             })
-            .done(function(data, textStatus, jqXHR){
-                console.log('OK');
+            .done(function(result, textStatus, jqXHR){
+                self.addPostedAttachments(result.data);
+                // this.update({attachments: result.data});
             })
             .fail(function(jqXHR, textStatus, errorThrown){
                 console.log('NG');
             });
         }
+        this.on('mount', function() {
+            if (opts.articleId != null){
+                // this.update({attachments: this.attachments.concat(result.data)});
+                // this.fetchItems();
+            }
+        })
     </attachments>
 </script>
 <script>
