@@ -19,6 +19,7 @@
 <form method="post">
     {!! csrf_field() !!}
     {{ Form::hidden('_articleId', $article->id) }}
+    {{ Form::hidden('attachmentIds', $article->attachmentsForInput(), ['id' => 'attachment-ids']) }}
     <div class="form-group">
         <label class="control-label">タイトル</label>
         <input class="form-control" type="text" name="articleTitle" placeholder="Title ?" value="{{$article->title}}">
@@ -95,11 +96,18 @@ marked.setOptions({
         this.fileData = null
         this.attachments = [];
         addPostedAttachments (attachments) {
+            var idset = []; 
+            this.attachments.forEach(function(val, idx){
+                idset.push(val.id);
+            }, this);
             self = this;
             attachments.forEach(function(val, idx){
                 self.attachments.push(val);
+                idset.push(val.id);
                 self.update();
             });
+            console.log(idset.join());
+            $('#attachment-ids').val(idset.join())
         }
         postFile (e) {
             var formElm = $(e.target).parent();
