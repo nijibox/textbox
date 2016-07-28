@@ -48,12 +48,7 @@
 @endsection
 
 @section('content.sub')
-<h3>メディアアップロード</h3>
-<form enctype="multipart/form-data" id="add-media-form" role="form" method="POST" action="">
-    {!! csrf_field() !!}
-    <input type="file" class="form-control" name="attachment">
-    <button type="button" id="add-media-button">Add</button>
-</form>
+<attachments token="{{csrf_token()}}" >
 @endsection
 
 @section('page_css')
@@ -80,29 +75,40 @@ marked.setOptions({
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script type="riot/tag">
+    <attachments>
+        <h3>添付</h3>
+
+        <form enctype="multipart/form-data" role="form">
+            <input type="hidden" name="_token" value={ opts.token }>
+            <input type="file" class="form-control" name="attachment" >
+            <button type="button" onclick={ postFile } >Add</button>
+        </form>
+
+        this.fileData = null
+        postFile (e) {
+            var formElm = $(e.target).parent();
+            var formData = new FormData($(formElm).get(0));
+            $.ajax({
+                url: '/attachments',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            })
+            .done(function(data, textStatus, jqXHR){
+                console.log('OK');
+            })
+            .fail(function(jqXHR, textStatus, errorThrown){
+                console.log('NG');
+            });
+        }
+    </attachments>
+</script>
 <script>
-/*Add new catagory Event*/
-$("#add-media-button").on('click', function(e){
-    var formElm = $(event.target).parent();
-    // var formElm = $('#add-media-form');
-    var formData = new FormData(formElm.get(0));
-    $.ajax({
-        url  : '/attachments',
-        type : 'POST',
-        data : formData,
-        cache       : false,
-        contentType : false,
-        processData : false,
-        dataType    : 'html'
-    })
-    .done(function(data, textStatus, jqXHR){
-        alert(data);
-    })
-    .fail(function(jqXHR, textStatus, errorThrown){
-        alert("fail");
-    });
-    console.log(formData);
-});
-/*Add new catagory Event*/
+riot.mount('*');
 </script>
 @endsection
