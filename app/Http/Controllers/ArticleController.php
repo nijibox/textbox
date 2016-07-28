@@ -9,6 +9,7 @@ use Config;
 use App\Http\Requests;
 use App\Article;
 use App\ArticleTag;
+use App\Attachment;
 use Illuminate\Http\Request;
 use Maknz\Slack\Facades\Slack;
 
@@ -110,6 +111,12 @@ class ArticleController extends Controller
             $tagBodySet = explode(',', $request->input('articleTags', ''));
             if (count($tagBodySet) > 1 || $tagBodySet[0] != '') {
                 $article->updateTags($tagBodySet);
+            }
+            
+            $attachmentIds = explode(',', $request->input('attachmentIds', ''));
+            if (count($attachmentIds) > 1 || $attachmentIds[0] != '') {
+                $attachments = Attachment::whereIn('id', $attachmentIds)->get();
+                $article->possessAttachments($attachments);
             }
             $article->save();
             $request->session()->flash('flash_message', $message);

@@ -34,6 +34,11 @@ class Article extends Model
         return $this->hasMany(\App\Comment::class, 'article_id');
     }
 
+    public function attachments()
+    {
+        return $this->hasMany(\App\Attachment::class, 'article_id');
+    }
+
     /**
      * 紐付いているタグを、HTMLフォームに合わせるために文字列化する
      * FIXME: もうちょっと直感的な方法があるはず
@@ -66,6 +71,36 @@ class Article extends Model
         foreach ($tags as $tagBody) {
             $this->tags()->create(['sort_num' => $sortNum, 'body' => $tagBody]);
             $sortNum++;
+        }
+    }
+
+    /**
+     * 紐付いている添付ファイルを、HTMLフォームに合わせるために文字列化する
+     *
+     * TODO: Not testing
+     * FIXME: もうちょっと直感的な方法があるはず
+     */
+    public function attachmentsForInput()
+    {
+        $text = '';
+        foreach ($this->attachments as $attachment) {
+            $text .= ',' . $attachment->id;
+        }
+        return $text == '' ?  '' : mb_substr($text, 1);
+    }
+
+    /**
+     * 記事に紐づくタグを、まとめて差し替える
+     * 
+     * TODO: Not testing
+     */
+    public function possessAttachments($attachments)
+    {
+        foreach ($attachments as $attachment) {
+            if ($attachment->article_id != $this->id) {
+                $attachment->article_id = $this->id;
+                $attachment->save();
+            }
         }
     }
 
