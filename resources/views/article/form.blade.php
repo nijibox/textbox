@@ -49,7 +49,7 @@
 @endsection
 
 @section('content.sub')
-<attachments token="{{csrf_token()}}" articleId="{{ $article->id }}">
+<attachments token="{{csrf_token()}}" article-id="{{ $article->id }}">
 @endsection
 
 @section('page_css')
@@ -131,7 +131,21 @@ marked.setOptions({
             });
         }
         this.on('mount', function() {
+            console.log(opts.articleId);
             if (opts.articleId != null){
+                self = this;
+                $.ajax({
+                    url: '/attachments?articleId='+opts.articleId,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json'
+                })
+                .done(function(result, textStatus, jqXHR){
+                    self.addPostedAttachments(result.data);
+                    // this.update({attachments: result.data});
+                })
                 // this.update({attachments: this.attachments.concat(result.data)});
                 // this.fetchItems();
             }

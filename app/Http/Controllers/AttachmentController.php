@@ -18,6 +18,18 @@ use DB;
 
 class AttachmentController extends Controller
 {
+    public function index(Request $request)
+    {
+        $articleId = $request->input('articleId', null);
+        if ( !is_null($articleId) ) {
+            return [
+                'data' => Attachment::where('article_id', $articleId)->get(),
+            ];
+        }
+        return [];
+   
+    }
+
     //
     public function store(Request $request)
     {
