@@ -49,6 +49,11 @@
 
 @section('content.sub')
 <h3>メディアアップロード</h3>
+<form enctype="multipart/form-data" id="add-media-form" role="form" method="POST" action="">
+    {!! csrf_field() !!}
+    <input type="file" class="form-control" id="catagry_logo">
+    <button type="button" id="add-media-button">Add</button>
+</form>
 @endsection
 
 @section('page_css')
@@ -75,4 +80,27 @@ marked.setOptions({
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script>
+/*Add new catagory Event*/
+$("#add-media-button").on('click', function(e){
+    $.ajax({
+        url: '/media',
+        // headers:  {
+        //     "X-CSRF-TOKEN": token
+        // },
+        type: 'POST',
+        data: ({
+            type: 'post',
+            formData: new FormData(this),
+        }),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+            console.log(response);
+        },
+    });
+});
+/*Add new catagory Event*/
+</script>
 @endsection
