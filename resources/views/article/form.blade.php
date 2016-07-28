@@ -51,7 +51,7 @@
 <h3>メディアアップロード</h3>
 <form enctype="multipart/form-data" id="add-media-form" role="form" method="POST" action="">
     {!! csrf_field() !!}
-    <input type="file" class="form-control" id="catagry_logo">
+    <input type="file" class="form-control" name="attachment">
     <button type="button" id="add-media-button">Add</button>
 </form>
 @endsection
@@ -83,23 +83,25 @@ marked.setOptions({
 <script>
 /*Add new catagory Event*/
 $("#add-media-button").on('click', function(e){
+    var formElm = $(event.target).parent();
+    // var formElm = $('#add-media-form');
+    var formData = new FormData(formElm.get(0));
     $.ajax({
-        url: '/media',
-        // headers:  {
-        //     "X-CSRF-TOKEN": token
-        // },
-        type: 'POST',
-        data: ({
-            type: 'post',
-            formData: new FormData(this),
-        }),
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function(data) {
-            console.log(response);
-        },
+        url  : '/attachments',
+        type : 'POST',
+        data : formData,
+        cache       : false,
+        contentType : false,
+        processData : false,
+        dataType    : 'html'
+    })
+    .done(function(data, textStatus, jqXHR){
+        alert(data);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown){
+        alert("fail");
     });
+    console.log(formData);
 });
 /*Add new catagory Event*/
 </script>
