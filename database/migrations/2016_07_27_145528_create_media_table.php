@@ -32,6 +32,6 @@ class CreateAttachmentTable extends Migration
      */
     public function down()
     {
-        Schema::drop('medias');
+        Schema::drop('attachments');
     }
 }
