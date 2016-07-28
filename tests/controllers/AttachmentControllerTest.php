@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
+use App\Attachment;
 
 class AttachmentControllerTest extends TestCase
 {
@@ -41,11 +42,10 @@ class AttachmentControllerTest extends TestCase
             null,
             true
         );
-        echo(asset('storage/AttachmentController.php'));
-
-
         $response = $this->action('POST', 'AttachmentController@store', [], [], [], ['attachment' => $uploadedFile]);
-        print($response);
         $this->assertEquals($response->getStatusCode(), 200);
+
+        $attachment = Attachment::find(1);
+        $this->assertEquals($attachment->path, '/storage/AttachmentControllerTest.php');
     }
 }
