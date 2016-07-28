@@ -14,13 +14,13 @@ class Attachment extends Model
      * @var array
      */
     protected $fillable = [
-        'owner_id', 'path', 'mime_type', 'article_id',
+        'owner_id', 'file_name', 'original_name', 'mime_type', 'article_id',
     ];
 
     public function toArray($options = 0)
     {
         $data = parent::toArray($options);
-        $data['url'] = Storage::url($this->path);
+        $data['url'] = Storage::url($this->file_name);
         return $data;
     }
 }

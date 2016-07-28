@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use Ramsey\Uuid\Uuid;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Attachment;
@@ -24,16 +26,18 @@ class AttachmentController extends Controller
             abort(400);
         }
         
+        $fileName = Uuid::uuid4();
         // Store file
         Storage::disk('public')->put(
-            $file->getClientOriginalName(),
+            $fileName,
             file_get_contents($file->getRealPath())
         );
-        $result = Storage::url($file->getClientOriginalName());
+        $result = Storage::url($fileName);
 
         // Manage as model
         $attachment = Attachment::create([
-            'path' => $file->getClientOriginalName(),
+            'file_name' => $fileName,
+            'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
             'owner_id' => Auth::user()->id,
         ]);
