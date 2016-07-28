@@ -53,6 +53,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/tags/', ['as' => 'get_tags_list', 'uses' => 'TagController@getList']);
     Route::get('/tags/{tagBody}', ['as' => 'list_by_tag', 'uses' => 'ArticleController@getListByTag']);
+
+    Route::resource('attachments', 'AttachmentController');
+
 });
 
 
