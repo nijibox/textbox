@@ -33,7 +33,7 @@ class AttachmentController extends Controller
 
         // Manage as model
         $attachment = Attachment::create([
-            'path' => Storage::url(($file->getClientOriginalName())),
+            'path' => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
             'owner_id' => Auth::user()->id,
         ]);
@@ -42,7 +42,7 @@ class AttachmentController extends Controller
             $attachment->save();
         });
 
-
-        return 'OK';
+        $data = [$attachment];
+        return ['data' => $data]; 
     }
 }
