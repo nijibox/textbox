@@ -90,6 +90,6 @@ class AttachmentControllerTest extends TestCase
         $respJson = json_decode($response->getContent());
         $this->assertEquals(1, $respJson->data[0]->id);
         $this->assertEquals('AttachmentControllerTest.php', $respJson->data[0]->original_name);
-        $this->assertRegExp('/\/storage\/.*\.php/', $respJson->data[0]->url);
+        $this->assertRegExp('/\/storage\/attachments\/.*\.php/', $respJson->data[0]->url);
     }
 }
