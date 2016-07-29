@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Attachment;
+use App\Article;
 
 use Storage;
 use Auth;
@@ -21,13 +22,18 @@ class AttachmentController extends Controller
     public function index(Request $request)
     {
         $articleId = $request->input('articleId', null);
-        if ( !is_null($articleId) ) {
-            return [
-                'data' => Attachment::where('article_id', $articleId)->get(),
-            ];
+        // Currently, articleId is required.
+        if ( is_null($articleId) ) {
+            abort(400);
         }
-        return [];
-   
+        // Only article owner can get attachments
+        $article = Article::find($articleId);
+        if ( is_null($article) || $article->author_id != Auth::user()->id ) {
+            abort(400);
+        }
+        return [
+            'data' => $article->attachments,
+        ];
     }
 
     //

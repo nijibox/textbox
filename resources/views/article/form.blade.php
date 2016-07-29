@@ -84,14 +84,17 @@ marked.setOptions({
         <form enctype="multipart/form-data" role="form">
             <input type="hidden" name="_token" value={ opts.token }>
             <input type="file" class="form-control" name="attachment" >
-            <button type="button" onclick={ postFile } >Add</button>
+            <button type="button" class="btn btn-default" onclick={ postFile } >追加</button>
         </form>
 
-        <ul>
-            <li each={ attachment in attachments }>
-                { attachment.url }
-            </li>
-        </ul>
+        <div>
+        <p style="white-space:nowrap; overflow:hidden;" each={ attachment in attachments }>
+            <button type="button" class="btn-clipboard btn btn-default btn-xs"  data-clipboard-text={ buildClipboardText(attachment) } >
+                <span class="glyphicon glyphicon-duplicate"></span>
+            </button>
+            { attachment.original_name }
+        </p>
+        </div>
 
         this.fileData = null
         this.attachments = [];
@@ -130,6 +133,9 @@ marked.setOptions({
                 console.log('NG');
             });
         }
+        buildClipboardText (attachment) {
+            return '![' + attachment.original_name +  ']' + '(' + attachment.url + ')'
+        }
         this.on('mount', function() {
             console.log(opts.articleId);
             if (opts.articleId != null){
@@ -144,15 +150,14 @@ marked.setOptions({
                 })
                 .done(function(result, textStatus, jqXHR){
                     self.addPostedAttachments(result.data);
-                    // this.update({attachments: result.data});
                 })
-                // this.update({attachments: this.attachments.concat(result.data)});
-                // this.fetchItems();
             }
         })
     </attachments>
 </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 <script>
+new Clipboard('.btn-clipboard');
 riot.mount('*');
 </script>
 @endsection
