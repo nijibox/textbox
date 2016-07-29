@@ -46,7 +46,7 @@ class AttachmentController extends Controller
         
         $fileName = Uuid::uuid4() . '.'. $file->getClientOriginalExtension();
         // Store file
-        Storage::disk('public')->put(
+        Storage::disk()->put(
             $fileName,
             file_get_contents($file->getRealPath())
         );
