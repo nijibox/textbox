@@ -19,6 +19,7 @@
 <form method="post">
     {!! csrf_field() !!}
     {{ Form::hidden('_articleId', $article->id) }}
+    {{ Form::hidden('attachmentIds', $article->attachmentsForInput(), ['id' => 'attachment-ids']) }}
     <div class="form-group">
         <label class="control-label">タイトル</label>
         <input class="form-control" type="text" name="articleTitle" placeholder="Title ?" value="{{$article->title}}">
@@ -48,12 +49,7 @@
 @endsection
 
 @section('content.sub')
-<h3>メディアアップロード</h3>
-<form enctype="multipart/form-data" id="add-media-form" role="form" method="POST" action="">
-    {!! csrf_field() !!}
-    <input type="file" class="form-control" name="attachment">
-    <button type="button" id="add-media-button">Add</button>
-</form>
+<attachments token="{{csrf_token()}}" article-id="{{ $article->id }}">
 @endsection
 
 @section('page_css')
@@ -80,29 +76,83 @@ marked.setOptions({
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script type="riot/tag">
+    <attachments>
+        <h3>添付</h3>
+
+        <form enctype="multipart/form-data" role="form">
+            <input type="hidden" name="_token" value={ opts.token }>
+            <input type="file" class="form-control" name="attachment" >
+            <button type="button" onclick={ postFile } >Add</button>
+        </form>
+
+        <ul>
+            <li each={ attachment in attachments }>
+                { attachment.url }
+            </li>
+        </ul>
+
+        this.fileData = null
+        this.attachments = [];
+        addPostedAttachments (attachments) {
+            var idset = []; 
+            this.attachments.forEach(function(val, idx){
+                idset.push(val.id);
+            }, this);
+            self = this;
+            attachments.forEach(function(val, idx){
+                self.attachments.push(val);
+                idset.push(val.id);
+                self.update();
+            });
+            console.log(idset.join());
+            $('#attachment-ids').val(idset.join())
+        }
+        postFile (e) {
+            var formElm = $(e.target).parent();
+            var formData = new FormData($(formElm).get(0));
+            self = this;
+            $.ajax({
+                url: '/attachments',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            })
+            .done(function(result, textStatus, jqXHR){
+                self.addPostedAttachments(result.data);
+                // this.update({attachments: result.data});
+            })
+            .fail(function(jqXHR, textStatus, errorThrown){
+                console.log('NG');
+            });
+        }
+        this.on('mount', function() {
+            console.log(opts.articleId);
+            if (opts.articleId != null){
+                self = this;
+                $.ajax({
+                    url: '/attachments?articleId='+opts.articleId,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json'
+                })
+                .done(function(result, textStatus, jqXHR){
+                    self.addPostedAttachments(result.data);
+                    // this.update({attachments: result.data});
+                })
+                // this.update({attachments: this.attachments.concat(result.data)});
+                // this.fetchItems();
+            }
+        })
+    </attachments>
+</script>
 <script>
-/*Add new catagory Event*/
-$("#add-media-button").on('click', function(e){
-    var formElm = $(event.target).parent();
-    // var formElm = $('#add-media-form');
-    var formData = new FormData(formElm.get(0));
-    $.ajax({
-        url  : '/attachments',
-        type : 'POST',
-        data : formData,
-        cache       : false,
-        contentType : false,
-        processData : false,
-        dataType    : 'html'
-    })
-    .done(function(data, textStatus, jqXHR){
-        alert(data);
-    })
-    .fail(function(jqXHR, textStatus, errorThrown){
-        alert("fail");
-    });
-    console.log(formData);
-});
-/*Add new catagory Event*/
+riot.mount('*');
 </script>
 @endsection

@@ -44,8 +44,13 @@ class AttachmentControllerTest extends TestCase
         );
         $response = $this->action('POST', 'AttachmentController@store', [], [], [], ['attachment' => $uploadedFile]);
         $this->assertEquals($response->getStatusCode(), 200);
+        $respJson = json_decode($response->getContent());
+        $this->assertEquals($respJson->data[0]->id, 1);
+        $this->assertEquals($respJson->data[0]->mime_type, 'text/plain');
+        $this->assertEquals($respJson->data[0]->path, 'AttachmentControllerTest.php');
+        $this->assertEquals($respJson->data[0]->url, '/storage/AttachmentControllerTest.php');
 
         $attachment = Attachment::find(1);
-        $this->assertEquals($attachment->path, '/storage/AttachmentControllerTest.php');
+        $this->assertEquals($attachment->path, 'AttachmentControllerTest.php');
     }
 }
