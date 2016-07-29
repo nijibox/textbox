@@ -84,7 +84,7 @@ marked.setOptions({
         <form enctype="multipart/form-data" role="form">
             <input type="hidden" name="_token" value={ opts.token }>
             <input type="file" class="form-control" name="attachment" >
-            <button type="button" onclick={ postFile } >Add</button>
+            <button type="button" class="btn btn-default" onclick={ postFile } >追加</button>
         </form>
 
         <ul>
@@ -144,10 +144,7 @@ marked.setOptions({
                 })
                 .done(function(result, textStatus, jqXHR){
                     self.addPostedAttachments(result.data);
-                    // this.update({attachments: result.data});
                 })
-                // this.update({attachments: this.attachments.concat(result.data)});
-                // this.fetchItems();
             }
         })
     </attachments>
