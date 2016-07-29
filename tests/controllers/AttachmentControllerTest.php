@@ -45,7 +45,6 @@ class AttachmentControllerTest extends TestCase
         $this->addMoreFixture();
         $response = $this->action('GET', 'AttachmentController@index', [], [], [], []);
         $this->assertEquals($response->getStatusCode(), 400);
-
     }
 
     public function testIndexArticleExist()
@@ -53,7 +52,6 @@ class AttachmentControllerTest extends TestCase
         $this->addMoreFixture();
         $response = $this->action('GET', 'AttachmentController@index', ['articleId' => 2], [], [], []);
         $this->assertEquals($response->getStatusCode(), 400);
-
     }
 
     public function testIndexArticleNotOwned()
