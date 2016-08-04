@@ -16,7 +16,13 @@
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
     <link href="/css/layout.css" rel="stylesheet">
-
+    <style>
+    @if( env('BACKGROUND_IMAGE', false) !== false )
+    body {
+        background-image: url("{{ env('BACKGROUND_IMAGE') }}");
+    }
+    @endif
+    </style>
     @yield('page_css')
 </head>
 <body id="app-layout">
