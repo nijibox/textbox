@@ -10,11 +10,3 @@ body {
 .fa-btn {
     margin-right: 6px;
 }
-
-body {
-    background-image: url('/logo-background.png');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: 98% 98%
-}
-

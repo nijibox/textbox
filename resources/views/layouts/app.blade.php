@@ -20,6 +20,9 @@
     @if( env('BACKGROUND_IMAGE', false) !== false )
     body {
         background-image: url("{{ env('BACKGROUND_IMAGE') }}");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: 98% 98%
     }
     @endif
     </style>
