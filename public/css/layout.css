@@ -1,7 +1,12 @@
 body {
-    min-height: 2000px;
+    font-family: 'Lato';
+    /*min-height: 2000px;*/
 }
 
 .navbar-static-top {
     margin-bottom: 19px;
+}
+
+.fa-btn {
+    margin-right: 6px;
 }

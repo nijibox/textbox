@@ -15,16 +15,17 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
+    <link href="/css/layout.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Lato';
-        }
-
-        .fa-btn {
-            margin-right: 6px;
-        }
+    @if( env('BACKGROUND_IMAGE', false) !== false )
+    body {
+        background-image: url("{{ env('BACKGROUND_IMAGE') }}");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: 98% 98%
+    }
+    @endif
     </style>
-
     @yield('page_css')
 </head>
 <body id="app-layout">
