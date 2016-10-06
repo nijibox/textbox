@@ -7,10 +7,44 @@
 <hr>
 @endsection
 
-@section('content.main')
-<div class="page-content">
-{!! $parser->parse($page->body) !!}
-</div>
+@section('content')
+<div class="container">
+    <div class="row">
+        @yield('content.title')
+    </div>
+
+    <view-markdown></view-markdown>
+@endsection
+
+@section('page_js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script src="/js/article.js"></script>
+
+<script type="riot/tag">
+<view-markdown>
+    <div class="row">
+        <div class="col-xs-9">
+            <div class="page-content" id="page-content"></div>
+        </div>
+        <div class="col-xs-3">
+            <h3>見出し</h3>
+            <div class="page-toc" id="page-toc">{this.toc}</div>
+        </div>
+    </div>
+
+    this.toc = null;
+    this.on('mount', function() {
+        var markdownContent = '' + this.opts.body + '\n\n[[toc]]'
+        document.getElementById('page-content').innerHTML = md.render(markdownContent)
+        this.toc = document.getElementById('page-content').getElementsByClassName('table-of-contents')[0]
+        document.getElementById('page-toc').appendChild(this.toc)
+    })
+</view-markdown>
+</script>
+<script>
+var pageJson = {!! json_encode($page) !!};
+riot.mount('view-markdown', pageJson);
+</script>
 @endsection
 
 @section('page_css')
