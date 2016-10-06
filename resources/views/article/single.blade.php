@@ -67,9 +67,24 @@
 @endsection
 
 @section('page_js')
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+<script>
+marked.setOptions({
+    gfm: true,
+    tables: false,
+    breaks: true,
+    pedantic: false,
+    sanitize: false,
+    smartLists: false,
+    smartypants: false,
+    highlight: function (code, lang) {
+        return hljs.highlightAuto(code, [lang]).value;
+    }
+});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
 <script type="riot/tag">
 
@@ -77,8 +92,7 @@
     <div class="page-content">
     </div>
     this.on('mount', function() {
-        var md = window.markdownit()
-        this.root.innerHTML = md.render(this.opts.body)
+        this.root.innerHTML = marked(this.opts.body)
     })
 </view-markdown>
 
@@ -90,6 +104,8 @@ riot.mount('view-markdown', articleJson);
 @endsection
 
 @section('page_css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css" />
 <style>
 .page-content img {
     position: relative;;

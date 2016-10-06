@@ -51,6 +51,7 @@
 
 @section('page_css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
 <style>
 .bootstrap-tagsinput {
@@ -60,6 +61,7 @@
 @endsection
 
 @section('page_js')
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
 <script>
 marked.setOptions({
@@ -69,11 +71,14 @@ marked.setOptions({
     pedantic: false,
     sanitize: false,
     smartLists: false,
-    smartypants: false});
+    smartypants: false,
+    highlight: function (code, lang) {
+        return hljs.highlightAuto(code, [lang]).value;
+    }
+});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
 <script type="riot/tag">
     <attachments>
@@ -174,13 +179,12 @@ marked.setOptions({
         </div>
 
         this.body = opts.article.body
-        this.md = window.markdownit()
         this.on('mount', function() {
-            document.getElementById('preview').innerHTML = this.md.render(this.body)
+            document.getElementById('preview').innerHTML = marked(this.body)
         })
         edit(e){
             this.body = e.target.value
-            document.getElementById('preview').innerHTML = this.md.render(this.body)
+            document.getElementById('preview').innerHTML = marked(this.body)
         }
 
     </edit-markdown>
