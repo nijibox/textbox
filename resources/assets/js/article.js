@@ -8,7 +8,7 @@ var md = require('markdown-it')({
     breaks: true,
     langPrefix: 'language-',
     linkify: true,
-    typographer:  false,
+    typographer: true,
     highlight: function (str, lang) {
         if (lang && hljs.getLanguage(lang)) {
             try {
@@ -20,5 +20,8 @@ var md = require('markdown-it')({
         return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
     }
 });
+md.use(require("markdown-it-anchor")); 
+md.use(require("markdown-it-table-of-contents"));
+
 
 window.md = md;

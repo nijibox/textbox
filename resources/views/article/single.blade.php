@@ -1,4 +1,4 @@
-@extends('layouts.2paned')
+@extends('layouts.app')
 
 @section('content.title')
 <h1>
@@ -30,10 +30,15 @@
 @endif
 @endsection
 
-@section('content.main')
-<view-markdown></view-markdown>
+@section('content')
+<div class="container">
+    <div class="row">
+        @yield('content.title')
+    </div>
 
-<hr><hr>
+    <view-markdown></view-markdown>
+
+    <hr><hr>
 
 {{--
 <div class="page-comment">
@@ -57,14 +62,9 @@
     </form>
 </div>
 --}}
-@endsection
-
-@section('content.sub')
-<h3>見出し</h3>
-<div>
-    {!! $headlineDom->saveHTML() !!}
 </div>
 @endsection
+
 
 @section('page_js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
@@ -73,10 +73,23 @@
 <script type="riot/tag">
 
 <view-markdown>
-    <div class="page-content">
+    <div class="row">
+        <div class="col-xs-9">
+            <div class="page-content" id="page-content"></div>
+        </div>
+        <div class="col-xs-3">
+            <h3>見出し</h3>
+            <div class="page-toc" id="page-toc">{this.toc}</div>
+        </div>
     </div>
+
+    this.toc = null;
     this.on('mount', function() {
-        this.root.innerHTML = md.render(this.opts.body)
+        var markdownContent = '' + this.opts.body + '\n\n[[toc]]'
+        document.getElementById('page-content').innerHTML = md.render(markdownContent)
+        console.log(md.render(markdownContent))
+        this.toc = document.getElementById('page-content').getElementsByClassName('table-of-contents')[0]
+        document.getElementById('page-toc').appendChild(this.toc)
     })
 </view-markdown>
 
