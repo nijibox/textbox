@@ -6,6 +6,8 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
-    "laravel-elixir": "^6.0.0-11"
+    "highlight.js": "^9.7.0",
+    "laravel-elixir": "^6.0.0-11",
+    "markdown-it": "^8.0.0"
   }
 }
