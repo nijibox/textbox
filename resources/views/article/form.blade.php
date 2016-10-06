@@ -156,8 +156,20 @@ marked.setOptions({
     <edit-markdown>
         <div class="form-group">
             <label class="control-label">本文</label>
-            <textarea name="articleBody" class="form-control" rows="10" onkeyup={ edit }>{this.body}</textarea>
-            <div class="page-content" id="preview">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#edit-markdown" aria-controls="edit-markdown" role="tab" data-toggle="tab">編集</a></li>
+                <li role="presentation"><a href="#preview-markdown" aria-controls="preview-markdown" role="tab" data-toggle="tab">プレビュー</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="edit-markdown">
+                    <textarea name="articleBody" class="form-control" rows="30" onkeyup={ edit }>{this.body}</textarea>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="preview-markdown">
+                    <div class="page-content" id="preview"></div>
+                </div>
             </div>
         </div>
 
