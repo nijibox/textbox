@@ -31,9 +31,7 @@
 @endsection
 
 @section('content.main')
-<div class="page-content">
-{!! $contentDom->saveHTML() !!}
-</div>
+<view-markdown></view-markdown>
 
 <hr><hr>
 
@@ -68,6 +66,28 @@
 </div>
 @endsection
 
+@section('page_js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script type="riot/tag">
+
+<view-markdown>
+    <div class="page-content">
+    </div>
+    this.on('mount', function() {
+        var md = window.markdownit()
+        this.root.innerHTML = md.render(this.opts.body)
+    })
+</view-markdown>
+
+</script>
+<script>
+var articleJson = {!! json_encode($article) !!};
+riot.mount('view-markdown', articleJson);
+</script>
+@endsection
 
 @section('page_css')
 <style>
