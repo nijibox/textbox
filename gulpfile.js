@@ -13,9 +13,6 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     // CSS
-     mix.styles([
-        'layout.css',
-    ]);
     mix.sass('app.scss');
     // JS
     mix.browserify('article.js');
