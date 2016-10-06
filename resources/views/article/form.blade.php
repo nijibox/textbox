@@ -28,10 +28,7 @@
         <label class="control-label">タグ</label>
         <input class="form-control" type="text" name="articleTags" data-role="tagsinput" value="{{$article->tagsForInput()}}">
     </div>
-    <div class="form-group">
-        <label class="control-label">本文</label>
-        <textarea name="articleBody" data-provide="markdown" rows="10">{{$article->body}}</textarea>
-    </div>
+    <edit-markdown></edit-markdown>
     <div class="form-group">
         <label class="radio-inline">
             {{ Form::radio('articleStatus', 'draft', $article->status == 'draft', ['id' => 'articleStatusDraft']) }}
@@ -76,6 +73,7 @@ marked.setOptions({
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
 <script type="riot/tag">
     <attachments>
@@ -154,10 +152,33 @@ marked.setOptions({
             }
         })
     </attachments>
+
+    <edit-markdown>
+        <div class="form-group">
+            <label class="control-label">本文</label>
+            <textarea name="articleBody" class="form-control" rows="10" onkeyup={ edit }>{this.body}</textarea>
+            <div class="page-content" id="preview">
+            </div>
+        </div>
+
+        this.body = opts.article.body
+        this.md = window.markdownit()
+        this.on('mount', function() {
+            document.getElementById('preview').innerHTML = this.md.render(this.body)
+        })
+        edit(e){
+            this.body = e.target.value
+            document.getElementById('preview').innerHTML = this.md.render(this.body)
+        }
+
+    </edit-markdown>
+
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 <script>
 new Clipboard('.btn-clipboard');
-riot.mount('*');
+var articleJson = {!! json_encode($article) !!};
+riot.mount('attathcments');
+riot.mount('edit-markdown', {article: articleJson});
 </script>
 @endsection
