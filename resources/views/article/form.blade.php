@@ -190,7 +190,7 @@ marked.setOptions({
 <script>
 new Clipboard('.btn-clipboard');
 var articleJson = {!! json_encode($article) !!};
-riot.mount('attathcments');
+riot.mount('attachments');
 riot.mount('edit-markdown', {article: articleJson});
 </script>
 @endsection
