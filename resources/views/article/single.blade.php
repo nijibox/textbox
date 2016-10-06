@@ -1,4 +1,4 @@
-@extends('layouts.2paned')
+@extends('layouts.app')
 
 @section('content.title')
 <h1>
@@ -30,10 +30,15 @@
 @endif
 @endsection
 
-@section('content.main')
-<view-markdown></view-markdown>
+@section('content')
+<div class="container">
+    <div class="row">
+        @yield('content.title')
+    </div>
 
-<hr><hr>
+    <view-markdown></view-markdown>
+
+    <hr><hr>
 
 {{--
 <div class="page-comment">
@@ -57,42 +62,34 @@
     </form>
 </div>
 --}}
-@endsection
-
-@section('content.sub')
-<h3>見出し</h3>
-<div>
-    {!! $headlineDom->saveHTML() !!}
 </div>
 @endsection
 
+
 @section('page_js')
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
-<script>
-marked.setOptions({
-    gfm: true,
-    tables: false,
-    breaks: true,
-    pedantic: false,
-    sanitize: false,
-    smartLists: false,
-    smartypants: false,
-    highlight: function (code, lang) {
-        return hljs.highlightAuto(code, [lang]).value;
-    }
-});
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script src="/js/article.js"></script>
 <script type="riot/tag">
 
 <view-markdown>
-    <div class="page-content">
+    <div class="row">
+        <div class="col-xs-9">
+            <div class="page-content" id="page-content"></div>
+        </div>
+        <div class="col-xs-3">
+            <h3>見出し</h3>
+            <div class="page-toc" id="page-toc">{this.toc}</div>
+        </div>
     </div>
+
+    this.toc = null;
     this.on('mount', function() {
-        this.root.innerHTML = marked(this.opts.body)
+        var markdownContent = '' + this.opts.body + '\n\n[[toc]]'
+        document.getElementById('page-content').innerHTML = md.render(markdownContent)
+        console.log(md.render(markdownContent))
+        this.toc = document.getElementById('page-content').getElementsByClassName('table-of-contents')[0]
+        document.getElementById('page-toc').appendChild(this.toc)
     })
 </view-markdown>
 
@@ -104,7 +101,6 @@ riot.mount('view-markdown', articleJson);
 @endsection
 
 @section('page_css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css" />
 <style>
 .page-content img {

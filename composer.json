@@ -9,7 +9,6 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravel/socialite": "^2.0",
-        "cebe/markdown": "^1.1",
         "laravelcollective/html": "^5.2",
         "doctrine/dbal": "^2.5",
         "maknz/slack": "^1.7",
