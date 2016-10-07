@@ -95,7 +95,6 @@
                 idset.push(val.id);
                 self.update();
             });
-            console.log(idset.join());
             $('#attachment-ids').val(idset.join())
         }
         postFile (e) {
@@ -123,7 +122,6 @@
             return '![' + attachment.original_name +  ']' + '(' + attachment.url + ')'
         }
         this.on('mount', function() {
-            console.log(opts.articleId);
             if (opts.articleId != null){
                 self = this;
                 $.ajax({

@@ -87,7 +87,6 @@
     this.on('mount', function() {
         var markdownContent = '' + this.opts.body + '\n\n[[toc]]'
         document.getElementById('page-content').innerHTML = md.render(markdownContent)
-        console.log(md.render(markdownContent))
         this.toc = document.getElementById('page-content').getElementsByClassName('table-of-contents')[0]
         document.getElementById('page-toc').appendChild(this.toc)
     })
