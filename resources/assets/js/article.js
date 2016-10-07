@@ -1,6 +1,18 @@
 var hljs = require('highlight.js'); // https://highlightjs.org/
 
 
+var highlightSyntax = (str, lang) =>
+{
+    if (lang && hljs.getLanguage(lang)) {
+        try {
+            return '<pre class="hljs"><code>' +
+                hljs.highlight(lang, str, true).value +
+                '</code></pre>';
+        } catch (__) {}
+    }
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+}
+
 // Actual default values
 var md = require('markdown-it')({
     html: true,
@@ -9,16 +21,7 @@ var md = require('markdown-it')({
     langPrefix: 'language-',
     linkify: true,
     typographer: true,
-    highlight: function (str, lang) {
-        if (lang && hljs.getLanguage(lang)) {
-            try {
-                return '<pre class="hljs"><code>' +
-                    hljs.highlight(lang, str, true).value +
-                    '</code></pre>';
-            } catch (__) {}
-        }
-        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-    }
+    highlight: highlightSyntax,
 });
 md.use(require("markdown-it-anchor")); 
 md.use(require("markdown-it-table-of-contents"));
