@@ -28,10 +28,7 @@
         <label class="control-label">タグ</label>
         <input class="form-control" type="text" name="articleTags" data-role="tagsinput" value="{{$article->tagsForInput()}}">
     </div>
-    <div class="form-group">
-        <label class="control-label">本文</label>
-        <textarea name="articleBody" data-provide="markdown" rows="10">{{$article->body}}</textarea>
-    </div>
+    <edit-markdown></edit-markdown>
     <div class="form-group">
         <label class="radio-inline">
             {{ Form::radio('articleStatus', 'draft', $article->status == 'draft', ['id' => 'articleStatusDraft']) }}
@@ -53,7 +50,7 @@
 @endsection
 
 @section('page_css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
 <style>
 .bootstrap-tagsinput {
@@ -63,20 +60,9 @@
 @endsection
 
 @section('page_js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
-<script>
-marked.setOptions({
-    gfm: true,
-    tables: false,
-    breaks: true,
-    pedantic: false,
-    sanitize: false,
-    smartLists: false,
-    smartypants: false});
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.5.0/riot+compiler.min.js"></script>
+<script src="/js/article.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script type="riot/tag">
     <attachments>
         <h3>添付</h3>
@@ -154,10 +140,44 @@ marked.setOptions({
             }
         })
     </attachments>
+
+    <edit-markdown>
+        <div class="form-group">
+            <label class="control-label">本文</label>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#edit-markdown" aria-controls="edit-markdown" role="tab" data-toggle="tab">編集</a></li>
+                <li role="presentation"><a href="#preview-markdown" aria-controls="preview-markdown" role="tab" data-toggle="tab">プレビュー</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="edit-markdown">
+                    <textarea name="articleBody" class="form-control" rows="30" onkeyup={ edit }>{this.body}</textarea>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="preview-markdown">
+                    <div class="page-content" id="preview"></div>
+                </div>
+            </div>
+        </div>
+
+        this.body = opts.article.body
+        this.on('mount', function() {
+            document.getElementById('preview').innerHTML = md.render(this.body)
+        })
+        edit(e){
+            this.body = e.target.value
+            document.getElementById('preview').innerHTML = md.render(this.body)
+        }
+
+    </edit-markdown>
+
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 <script>
 new Clipboard('.btn-clipboard');
-riot.mount('*');
+var articleJson = {!! json_encode($article) !!};
+riot.mount('attachments');
+riot.mount('edit-markdown', {article: articleJson});
 </script>
 @endsection

@@ -42,7 +42,6 @@ class PageController extends Controller
         // Render page
         return view('page.view', [
             'page' => $page,
-            'parser' => new \App\Extra\QiitaMarkdown(),
         ]);
     }
 
