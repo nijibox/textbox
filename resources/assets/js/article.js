@@ -13,6 +13,12 @@ var highlightSyntax = (str, lang) =>
     return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
 }
 
+var encodeMultibytechars = (str) =>
+{
+    return encodeURI(str).replace(/%/g, "").toLowerCase()
+}
+
+
 // Actual default values
 var md = require('markdown-it')({
     html: true,
@@ -24,7 +30,7 @@ var md = require('markdown-it')({
     highlight: highlightSyntax,
 });
 md.use(require("markdown-it-anchor")); 
-md.use(require("markdown-it-table-of-contents"));
+md.use(require("markdown-it-table-of-contents"), {slugify: encodeMultibytechars});
 
 
 window.md = md;
