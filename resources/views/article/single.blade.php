@@ -40,7 +40,6 @@
 
     <hr><hr>
 
-{{--
 <div class="page-comment">
     @foreach($article->comments as $comment)
     <div class="well well-sm" id="{{ 'comment'.$comment->id }}">
@@ -61,7 +60,7 @@
 
     </form>
 </div>
---}}
+
 </div>
 @endsection
 
