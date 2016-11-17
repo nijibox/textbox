@@ -31,12 +31,12 @@ class CommentController extends Controller
             'body' => $request->input('articleComment'),
         ]);
         $comment->user_id = $user->id;
-        DB::transaction(function () use ($comment, $request)
+        DB::transaction(function () use ($article, $comment, $request)
         {
             $request->session()->flash('flash_message', 'コメントしました');
+            $article->comments()->save($comment);
         });
         
-        $article->comments()->save($comment);
         return redirect('/articles/'.$articleId.'#comment'.$comment->id);
     }
 }
