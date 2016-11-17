@@ -11,5 +11,5 @@ deployment:
     branch:
       - /release\/.+/
     commands:
-      - git push $DEPLOY_HOST:$DEPLOY_TARGET HEAD:master
+      - git push $DEPLOY_HOST:$DEPLOY_TARGET HEAD:master --force
       - ssh $DEPLOY_HOST enter $DEPLOY_TARGET web php artisan migrate
