@@ -94,8 +94,8 @@ class AuthController extends Controller
     {
         // TODO: Oauthドライバー名が固定されている
         $userData = Socialite::with('google')->user();
-        $user = User::query()->where('email', '=', $userData->getEmail())->first();
         DB::transaction(function() use($userData, $auth){
+            $user = User::query()->where('email', '=', $userData->getEmail())->first();
             if ( is_null($user) ) {
                 $user = User::create([
                     'name' => $userData->getName(),
