@@ -122,7 +122,7 @@
             return '![' + attachment.original_name +  ']' + '(' + attachment.url + ')'
         }
         this.on('mount', function() {
-            if (opts.articleId != null){
+            if (opts.articleId != ''){
                 self = this;
                 $.ajax({
                     url: '/attachments?articleId='+opts.articleId,
